@@ -1,0 +1,290 @@
+<title>{{TITLE}}</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: one quiet column of phone-shaped players, like scrolling a feed. A single switch at the top flips every clip between its two versions. */
+:root {
+  --bg: #f5f6f8;
+  --fg: #111318;
+  --muted: #6b7180;
+  --line: #dfe2e8;
+  --pill: #e6e8ee;
+  --pill-on: #111318;
+  --pill-on-fg: #ffffff;
+  --frame: #0b0c0f;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0c0d10; --fg: #f2f3f6; --muted: #9096a3; --line: #23262d;
+    --pill: #1b1e24; --pill-on: #f2f3f6; --pill-on-fg: #0c0d10; --frame: #000000;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0c0d10; --fg: #f2f3f6; --muted: #9096a3; --line: #23262d;
+  --pill: #1b1e24; --pill-on: #f2f3f6; --pill-on-fg: #0c0d10; --frame: #000000;
+  color-scheme: dark;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.45;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 96px;
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg);
+}
+
+.wrap { max-width: 1120px; margin-inline: auto; }
+
+header.top { padding-block: 44px 20px; display: grid; gap: 10px; }
+header.top h1 {
+  font-family: var(--display);
+  font-size: clamp(30px, 6vw, 44px);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+  margin: 0;
+  text-wrap: balance;
+}
+header.top p { margin: 0; color: var(--muted); max-width: 34ch; }
+
+.bar {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 5;
+  background: var(--bg);
+  padding-block: 12px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 20px;
+}
+.legend { margin: 0 0 32px; color: var(--muted); max-width: 40ch; }
+.switch {
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: auto;
+  background: var(--pill);
+  border-radius: 999px;
+  padding: 4px;
+  gap: 4px;
+}
+.switch button {
+  font: inherit;
+  font-size: clamp(12px, 3.5vw, 15px);
+  font-weight: 600;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  padding: 9px clamp(8px, 2.6vw, 18px);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.switch button[aria-pressed="true"] { background: var(--pill-on); color: var(--pill-on-fg); }
+.switch button:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 56px 28px;
+  justify-items: center;
+}
+.clip { width: 100%; max-width: 380px; display: grid; gap: 14px; min-width: 0; }
+.frame {
+  position: relative;
+  aspect-ratio: 9 / 16;
+  width: 100%;
+  max-width: 100%;
+  background: var(--frame);
+  border-radius: 22px;
+  overflow: hidden;
+}
+.frame video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; background: var(--frame); }
+.meta { display: grid; gap: 2px; padding-inline: 4px; }
+.meta .num {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--muted); font-variant-numeric: tabular-nums;
+}
+.meta .hook { font-family: var(--display); font-size: 19px; font-weight: 600; line-height: 1.25; letter-spacing: -0.01em; text-wrap: balance; }
+.meta .hook.off { color: var(--muted); font-weight: 500; }
+.meta .song { font-size: 14px; color: var(--muted); margin-top: 4px; }
+.meta .song[hidden] { display: none; }
+
+.music { margin-top: 88px; padding-top: 40px; border-top: 1px solid var(--line); }
+h2.sec {
+  font-family: var(--display); font-size: 22px; font-weight: 700; letter-spacing: -0.015em;
+  margin: 0 0 8px;
+}
+.music .legend { margin-bottom: 24px; }
+.music .grid { justify-items: start; }
+footer.note { margin-top: 72px; color: var(--muted); font-size: 14px; max-width: 40ch; }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1 id="h1"></h1>
+    <p id="intro"></p>
+  </header>
+
+  <div class="bar" id="bar">
+    <div class="switch" role="group" aria-label="Which version to show" id="switch"></div>
+  </div>
+
+  <p class="legend" id="legend"></p>
+
+  <main class="grid" id="grid"></main>
+
+  <div id="sections"></div>
+
+  <footer class="note" id="footer"></footer>
+</div>
+
+<script id="page-data" type="application/json">{{DATA}}</script>
+<script>
+(function () {
+  // Everything on the page comes from the JSON above (written by scripts/preview_page.py).
+  var D = JSON.parse(document.getElementById("page-data").textContent);
+  var MODES = D.modes || [];
+  var KEY = "clip-preview-mode:" + (D.storage_key || D.title || "page");
+  var mode = MODES.length ? MODES[0].key : null;
+  try { var saved = localStorage.getItem(KEY); if (MODES.some(function (m) { return m.key === saved; })) mode = saved; } catch (e) {}
+
+  function lines(el, text) {
+    (text || "").split("\n").forEach(function (t, i) { if (i) el.appendChild(document.createElement("br")); el.appendChild(document.createTextNode(t)); });
+  }
+  document.getElementById("h1").textContent = D.title || "Clips";
+  lines(document.getElementById("intro"), D.intro || (MODES.length > 1 ? "Tap any clip to play it. The switch changes every clip to that version." : "Tap any clip to play it."));
+  lines(document.getElementById("footer"), D.footer || "These are small preview copies so they load fast.");
+  if (MODES.length < 2) document.getElementById("bar").hidden = true;
+
+  var sw = document.getElementById("switch");
+  MODES.forEach(function (m) {
+    var b = document.createElement("button");
+    b.type = "button"; b.dataset.mode = m.key; b.textContent = m.label; b.setAttribute("aria-pressed", "false");
+    sw.appendChild(b);
+  });
+
+  var grid = document.getElementById("grid");
+  var videos = [];
+  function modeOf(k) { for (var i = 0; i < MODES.length; i++) if (MODES[i].key === k) return MODES[i]; return {}; }
+  // A clip without a file for this mode shows its first available version.
+  function media(clip) {
+    var f = clip.files[mode];
+    if (!f) { for (var i = 0; i < MODES.length; i++) if (clip.files[MODES[i].key]) { f = clip.files[MODES[i].key]; break; } }
+    return f || { mp4: "", jpg: "" };
+  }
+  function numText(clip) { return (clip.label || clip.id.toUpperCase()) + " \u00b7 " + clip.len + " sec"; }
+
+  function build(clip, parent, fixed) {
+    var card = document.createElement("article");
+    card.className = "clip";
+
+    var frame = document.createElement("div");
+    frame.className = "frame";
+
+    var v = document.createElement("video");
+    v.controls = true;
+    v.playsInline = true;
+    v.setAttribute("playsinline", "");
+    v.preload = "none";
+    v.id = "clip-" + clip.id;
+    v.setAttribute("aria-label", "Clip " + clip.id + ", " + clip.hook);
+    frame.appendChild(v);
+
+    var meta = document.createElement("div");
+    meta.className = "meta";
+    var num = document.createElement("div");
+    num.className = "num";
+    num.textContent = numText(clip);
+    var hook = document.createElement("div");
+    hook.className = "hook";
+    hook.textContent = clip.hook;
+    var song = document.createElement("div");
+    song.className = "song";
+    song.hidden = true;
+    meta.appendChild(num);
+    meta.appendChild(hook);
+    meta.appendChild(song);
+
+    card.appendChild(frame);
+    card.appendChild(meta);
+    parent.appendChild(card);
+
+    // If the player can't stream the file directly, fetch it whole and play that.
+    v.addEventListener("error", function () {
+      if (v.dataset.retried === v.dataset.file) return;
+      v.dataset.retried = v.dataset.file;
+      fetch(v.dataset.file).then(function (r) { return r.blob(); }).then(function (b) {
+        v.src = URL.createObjectURL(b);
+        v.play().catch(function () {});
+      }).catch(function () {});
+    });
+
+    v.addEventListener("play", function () {
+      videos.forEach(function (o) { if (o.el !== v && !o.el.paused) o.el.pause(); });
+    });
+
+    if (fixed) {
+      v.dataset.file = clip.file.mp4;
+      v.poster = clip.file.jpg;
+      v.src = v.dataset.file;
+      if (clip.song) { song.hidden = false; song.textContent = "Song: " + clip.song; }
+    }
+
+    videos.push({ el: v, clip: clip, hook: hook, song: song, fixed: !!fixed });
+  }
+
+  (D.sections || []).forEach(function (sec, i) {
+    var el = document.createElement("section");
+    el.className = "music";
+    el.setAttribute("aria-labelledby", "sec-h-" + i);
+    var h = document.createElement("h2"); h.className = "sec"; h.id = "sec-h-" + i; h.textContent = sec.title;
+    var p = document.createElement("p"); p.className = "legend"; lines(p, sec.legend || "");
+    var g = document.createElement("div"); g.className = "grid";
+    el.appendChild(h); el.appendChild(p); el.appendChild(g);
+    document.getElementById("sections").appendChild(el);
+    sec.clips.forEach(function (clip) { build(clip, g, true); });
+  });
+  D.clips.forEach(function (clip) { build(clip, grid, false); });
+
+  var buttons = Array.prototype.slice.call(document.querySelectorAll(".switch button"));
+
+  function apply() {
+    var m = modeOf(mode);
+    videos.forEach(function (o) {
+      o.el.pause();
+      if (o.fixed) return;
+      var f = media(o.clip);
+      o.el.dataset.file = f.mp4;
+      o.el.poster = f.jpg;
+      o.el.src = f.mp4;
+      o.el.preload = "none";
+      o.hook.classList.toggle("off", !m.title);
+      var showSong = !!m.song;
+      o.song.hidden = !showSong;
+      o.song.textContent = o.clip.song ? "Song: " + o.clip.song : "Music still to come";
+    });
+    buttons.forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.mode === mode)); });
+    document.getElementById("legend").textContent = m.legend || "";
+  }
+
+  function set(k) {
+    if (k === mode) return;
+    mode = k;
+    try { localStorage.setItem(KEY, k); } catch (e) {}
+    apply();
+  }
+
+  buttons.forEach(function (b) { b.addEventListener("click", function () { set(b.dataset.mode); }); });
+
+  apply();
+})();
+</script>

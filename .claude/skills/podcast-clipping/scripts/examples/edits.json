@@ -1,0 +1,61 @@
+{
+ "_doc": "Hand edits per clip for engine/render_v2.py. segments.<index>: start/end (lock an edge, master s), cuts [[a,b]] (remove exact master ranges, no pads), mics auto|both|host. shots: split_at / cutaway_at (OUTPUT seconds), no_cutaway [[a,b]] (output s), splits (target count). word_fixes: token-level caption corrections applied before line breaking (captions_v2.apply_word_fixes) where the transcript misses or mishears words the audio has. drop_backchannel: the guest's lone 'yeah' is not captioned. shots.force_frames: [[f0, f1, kind R|C|S|H, look, why], ...] OUTPUT frames tiling the clip: a hand shot list that replaces the automatic plan. caption_patches: hand fixes on the finished caption lines: replace [[old, new]], merge_next [[line, new text]], drop_into_next_once [line].",
+ "01": {
+  "segments": {
+   "2": {
+    "start": 688.8,
+    "why": "quiet 'I' at the start of the ending was shaved: start locked a little earlier"
+   }
+  },
+  "drop_backchannel": true
+ },
+ "02": {
+  "segments": {
+   "0": {
+    "cuts": [
+     [
+      2564.87,
+      2565.21
+     ]
+    ],
+    "why": "doubled word: the second 'is' removed"
+   },
+   "1": {
+    "cuts": [
+     [
+      1600.54,
+      1601.05
+     ]
+    ],
+    "why": "false start removed"
+   }
+  },
+  "shots": {
+   "splits": 1,
+   "cutaway_at": [
+    3.6
+   ],
+   "no_guest": [
+    [
+     1602.0,
+     1604.5
+    ]
+   ]
+  },
+  "shots_why": "the guest has a hand over the face 1602.0-1604.5 on the master clock",
+  "word_fixes": [
+   [
+    "give you an example",
+    "i'll give you an example."
+   ]
+  ],
+  "caption_patches": {
+   "replace": [
+    [
+     "the numbers on",
+     "the numbers on your phone"
+    ]
+   ]
+  }
+ }
+}

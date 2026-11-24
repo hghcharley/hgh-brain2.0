@@ -1,0 +1,153 @@
+{
+ "title": "My show ep. 12",
+ "people": {
+  "host": {
+   "name": "Host"
+  },
+  "guest": {
+   "name": "Guest"
+  }
+ },
+ "mics": {
+  "host": {
+   "file": "raw/mic_host.wav"
+  },
+  "guest": {
+   "file": "raw/mic_guest.wav"
+  }
+ },
+ "cameras": {
+  "camA": {
+   "proxy": "raw/camA_proxy.mp4",
+   "source": "raw/camA.mov",
+   "acoustic_delay_ms": 10.0
+  },
+  "camB": {
+   "proxy": "raw/camB_proxy.mp4",
+   "source": "raw/camB.mov",
+   "acoustic_delay_ms": 7.0
+  },
+  "camC": {
+   "proxy": "raw/camC_proxy.mp4",
+   "source": "raw/camC.url",
+   "acoustic_delay_ms": 7.5
+  }
+ },
+ "wide": {
+  "host_side": "left"
+ },
+ "colour": {
+  "camB": [
+   0.98,
+   1.0,
+   1.025
+  ]
+ },
+ "face_w_filter_4k": {
+  "close": [
+   300,
+   600
+  ],
+  "wide": [
+   120,
+   260
+  ]
+ },
+ "face_w_accept_4k": {
+  "close": [
+   300,
+   650
+  ],
+  "wide": [
+   120,
+   280
+  ]
+ },
+ "looks": {
+  "guest_half": {
+   "scale": 0.75,
+   "w": 1800,
+   "h": 1600,
+   "face_x": 0.56,
+   "eye_y": 0.22,
+   "aspect": "9:8"
+  }
+ },
+ "captions": {
+  "font": "assets/MyBoldSans.ttf",
+  "phrase_fixes": [
+   [
+    [
+     "five",
+     "point",
+     "nine",
+     "million",
+     "dollars"
+    ],
+    [
+     "$5.9",
+     "million"
+    ]
+   ],
+   [
+    [
+     "951"
+    ],
+    [
+     "9:51"
+    ]
+   ],
+   [
+    [
+     "st",
+     "sop"
+    ],
+    [
+     "sop"
+    ]
+   ]
+  ]
+ },
+ "transcript": {
+  "ignore_until_s": 2.3,
+  "fixes": [
+   [
+    [
+     "clawed",
+     "code"
+    ],
+    [
+     "Claude",
+     "Code"
+    ]
+   ],
+   [
+    [
+     "chat",
+     "gpt"
+    ],
+    [
+     "ChatGPT"
+    ]
+   ]
+  ]
+ },
+ "wide_opening": {
+  "plate_cam_time": [
+   3552,
+   3578
+  ],
+  "crop_x_limits_4k": [
+   0,
+   1000
+  ],
+  "head_search_cols_proxy": [
+   60,
+   520
+  ],
+  "hair_top_range_out": [
+   450,
+   760
+  ]
+ }
+}

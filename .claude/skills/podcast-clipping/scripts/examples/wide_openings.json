@@ -1,0 +1,11 @@
+{
+ "_doc": "Opening overrides for --opening wide (output seconds). force: {E0, E1, kind C|S|H, why} fixes the end of shot 0 (the wide) and of the first guest shot, after a look at the frames.",
+ "02": {
+  "force": {
+   "E0": 3.003,
+   "E1": 4.421,
+   "kind": "C",
+   "why": "listening cutaway, hand-chosen: the guest is clean only until the join at 4.42 s; after it the eyes shut mid-laugh"
+  }
+ }
+}

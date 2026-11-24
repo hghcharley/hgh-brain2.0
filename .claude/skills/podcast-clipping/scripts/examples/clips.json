@@ -1,0 +1,50 @@
+[
+ {
+  "id": "01",
+  "slug": "the-day-it-changed",
+  "title_hook": "the moment that\nchanged how i work",
+  "segments": [
+   {
+    "start": 684.85,
+    "end": 687.66,
+    "note": "cold open, lifted from later in the answer"
+   },
+   {
+    "start": 656.85,
+    "end": 677.7,
+    "note": "the story"
+   },
+   {
+    "start": 688.87,
+    "end": 691.97,
+    "note": "ending: what changed after"
+   }
+  ],
+  "intended": "That moment there changed my life forever. // I remember we were sitting in the office and you showed me the numbers on your phone. // I never looked at anything the same after that.",
+  "notes": "Make sure the quiet 'I' of 'I never looked' is whole."
+ },
+ {
+  "id": "02",
+  "slug": "the-hard-part-is-gone",
+  "title_hook": "the hard part\njust disappeared",
+  "segments": [
+   {
+    "start": 2563.82,
+    "end": 2568.32,
+    "note": "cold open, said at 42:43"
+   },
+   {
+    "start": 1593.26,
+    "end": 1608.29,
+    "note": "context, said at 26:33"
+   },
+   {
+    "start": 2632.91,
+    "end": 2651.95,
+    "note": "ending: the concrete example of a business owner"
+   }
+  ],
+  "intended": null,
+  "notes": "Joins moments 16 minutes apart: tell the host which lines. The first version ended on a promise; the example segment was added so the ending is tangible."
+ }
+]
